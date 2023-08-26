@@ -21,3 +21,11 @@
 .vs/Mysql_Project/FileContentIndex/8996ce17-5649-4939-bbd3-4948a92ba701.vsidx
 .vs/Mysql_Project/FileContentIndex/e5fd1158-9595-4813-a8e1-388308ca156c.vsidx
 .vs/Mysql_Project/FileContentIndex/read.lock
+.vs/Mysql_Project/v17/Browse.VC.db
+.vs/Mysql_Project/v17/ipch/AutoPCH/3a2196f62078b5b8/MAIN.ipch
+.vs/Mysql_Project/v17/Browse.VC.db
+*.db-shm
+*.opendb
+*.db-wal
+*.ipch
+*.db
