@@ -119,31 +119,29 @@ int insert_data()
 	insert_data_format(); // print format ascii
 	con->setSchema("oop_project_db");
 	//-----
-	pstmt = con->prepareStatement("INSERT INTO my_data(sr_no, id_no, type, Component_name, Description, price) VALUES(?,?,?,?,?,?)");
-	int sr_no;
-	cout << "\n\033[32m<<Enter sr_no: \033[0m";
-	cin >> sr_no;
-	pstmt->setInt(1, sr_no);
+	pstmt = con->prepareStatement("INSERT INTO my_data(id_no, type, Component_name, Description, price) VALUES(?,?,?,?,?)");
+	//int sr_no = 0;
+	//pstmt->setInt(1, 0);
 	int id_no;
 	cout<< "\n\033[32m<<Enter id_no: \033[0m";
 	cin >> id_no;
-	pstmt->setInt(2, id_no);
+	pstmt->setInt(1, id_no);
 	string type;
 	cout << "\n\033[32m<<Enter Type of Component: \033[0m";
 	cin >> type;
-	pstmt->setString(3, type);
+	pstmt->setString(2, type);
 	string Component_name;
 	cout<< "\n\033[32m<<Enter component name: \033[0m";
 	cin >> Component_name;
-	pstmt->setString(4, Component_name);
+	pstmt->setString(3, Component_name);
 	string Description;
 	cout<< "\n\033[32m<<Enter Description (to add space use '_'): \033[0m";
 	cin >> Description;
-	pstmt->setString(5, Description);
+	pstmt->setString(4, Description);
 	int price;
 	cout<< "\n\033[32m<<Enter Price: \033[0m";
 	cin >> price;
-	pstmt->setInt(6, price);
+	pstmt->setInt(5, price);
 	pstmt->execute();
 
 	cout<<"\n\033[34m<<Insert Data Complete :)\n\033[0m";
