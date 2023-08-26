@@ -67,3 +67,14 @@ const int insert_data_format()
 	cout << "\033[0m";
 	return 0;
 }
+
+const int opt_for_update_data()
+{
+	cout << "1: id_no" << endl;
+	cout << "2: type" << endl;
+	cout << "3: Component_name" << endl;
+	cout << "4: Description" << endl;
+	cout << "5: price" << endl;
+	cout << "6: All" << endl;
+	return 0;
+}

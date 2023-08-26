@@ -252,7 +252,30 @@ int update_data()
 		cout << "\t\033[36m------------------------------------------------------------------------\033[0m" << endl;
 	}
 
-	cout << "\n<<Select ID to Update: ";
+	cout << "\n\033[32m<<Select ID to Update: \033[0m";
+	int i;
+	cin >> i;
+	cout << "\033[35mSelected \033[36m" << i << "\033[35m id as target id!\033[0m" << endl;
+
+	cout << "Select option to Update:" << endl;
+	opt_for_update_data(); //ASCIIART.h function
+	cout << "<<: ";
+	int j;
+	cin >> j;
+
+
+	//---id_no
+	if (j == 1)
+	{
+		int new_id;
+		cout << "Enter new id_no: ";
+		cin >> new_id;
+		pstmt = con->prepareStatement("UPDATE my_data SET id_no = ? WHERE sr_no = ?");
+		pstmt->setInt(1, new_id);
+		pstmt->setInt(2, i);
+		pstmt->executeQuery();
+		cout << "Update done!" << endl;
+	}
 
 	return 0;
 }
