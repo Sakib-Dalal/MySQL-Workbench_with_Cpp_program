@@ -1,13 +1,16 @@
 #include"my_library.h"
+#include<string.h>
 
 // Functions
 void login();
 void select();
-void input_table();
-void delete_table();
-void read_table();
+int insert_data();
+int update_data();
+int read_data();
+int delete_data();
 
-
+int opt_in();
+int opt_de();
 // Function implimentation
 
 // 01-----
@@ -45,49 +48,291 @@ void select()
 	cout << endl;
 	select_ascii();
 	cout << endl;
+	cout << "\033[32m<<Enter Input: \033[0m";
 	cin >> i;
+
 	//conditions
+
 	if (i == 1 || i == 01)
 	{
-		input_table();
+		system("cls");
+		insert_data();
+	}
+	else if (i == 2 || i == 02)
+	{
+		system("cls");
+		read_data();
+	}
+	else if (i == 3 || i == 03)
+	{
+		system("cls");
+		update_data();
 	}
 	else if (i == 4 || i == 04)
 	{
-		delete_table();
+		system("cls");
+		delete_data();
+	}
+	else if (i == 5 || i == 05)
+	{
+		system("cls");
+		cout << "\033[31m<<Press '1' to 'yes' '0' to 'no': \033[0m";
+		cin >> i;
+		if (i == 1)
+		{
+			system("cls");
+			main_ascii();
+			login();
+		}
+		else if (i != 1)
+		{
+			system("cls");
+			select();
+		}
+	}
+	else if (i != 1 || i != 01 || i != 2 || i != 02 || i != 3 || i != 03 || i != 4 || i != 04|| i != 5||i!=05)
+	{
+		system("cls");
+		cout << "\033[31m<<Error try again! \033[0m";
+		select();
+		
 	}
 }
 
 
-void input_table()
+
+//-01
+int insert_data()
 {
 	sql::Driver* driver;
 	sql::Connection* con;
 	sql::Statement* stmt;
+	sql::PreparedStatement* pstmt;
+	
 
 	driver = get_driver_instance();
 	con = driver->connect(server, name, password);
+	
+	
+	 //
+	cout << endl<<"\033[34m<<using database now: \n\033[0m"<< endl;
+	insert_data_format(); // print format ascii
+	con->setSchema("oop_project_db");
+	//-----
+	pstmt = con->prepareStatement("INSERT INTO my_data(sr_no, id_no, type, Component_name, Description, price) VALUES(?,?,?,?,?,?)");
+	int sr_no;
+	cout << "\n\033[32m<<Enter sr_no: \033[0m";
+	cin >> sr_no;
+	pstmt->setInt(1, sr_no);
+	int id_no;
+	cout<< "\n\033[32m<<Enter id_no: \033[0m";
+	cin >> id_no;
+	pstmt->setInt(2, id_no);
+	string type;
+	cout << "\n\033[32m<<Enter Type of Component: \033[0m";
+	cin >> type;
+	pstmt->setString(3, type);
+	string Component_name;
+	cout<< "\n\033[32m<<Enter component name: \033[0m";
+	cin >> Component_name;
+	pstmt->setString(4, Component_name);
+	string Description;
+	cout<< "\n\033[32m<<Enter Description (to add space use '_'): \033[0m";
+	cin >> Description;
+	pstmt->setString(5, Description);
+	int price;
+	cout<< "\n\033[32m<<Enter Price: \033[0m";
+	cin >> price;
+	pstmt->setInt(6, price);
+	pstmt->execute();
 
-	stmt = con->createStatement();
-	//cout << stmt->execute("SHOW DATABASES") << endl;
-	stmt->execute("USE oop_project_db");
-	stmt->execute("DROP TABLE IF EXISTS petrol_pump");
-	stmt->execute("CREATE TABLE petrol_pump(id INT, fuel VARCHAR(15), price INT);");
+	cout<<"\n\033[34m<<Insert Data Complete :)\n\033[0m";
+
+	opt_in();
+
+	delete pstmt;
+	delete con;
+	system("pause");
+	return 0;
 }
 
-void delete_table()
+
+//--02
+int read_data()
 {
 	sql::Driver* driver;
 	sql::Connection* con;
 	sql::Statement* stmt;
+	sql::PreparedStatement* pstmt;
+	sql::ResultSet* result;
+
 
 	driver = get_driver_instance();
 	con = driver->connect(server, name, password);
 
-	stmt = con->createStatement();
-	stmt->execute("USE oop_project_db");
-	stmt->execute("DROP TABLE IF EXISTS petrol_pump");
+	con->setSchema("oop_project_db");
+	pstmt = con->prepareStatement("SELECT* FROM my_data;");
+	result = pstmt->executeQuery();
+	char bspc[] = "          ";
+	char spc[] = " ";
+	cout << endl;
+
+	cout <<"\t\033[0m------------------------------------------------------------------------\033[0m" << endl;
+	cout <<"\t"<<bspc << "\033[0msr_no \033[31mid_no \033[32mtype \033[33mComponent_name \033[34mDescription \033[35mprice" << endl;
+	cout <<"\t\033[0m------------------------------------------------------------------------\033[0m" << endl;
+	while (result->next())
+	{
+		cout << "\t" << bspc <<"\033[0m"<< result->getInt(1) << spc << "\033[31m" << result->getInt(2) << spc << "\033[32m" << result->getString(3).c_str() <<spc<< "\033[33m"  << result->getString(4).c_str() << spc <<"\033[34m" << result->getString(5).c_str() << spc<<"\033[35m" << result->getInt(6) <<"\033[0m" << endl;
+		cout << "\t\033[36m------------------------------------------------------------------------\033[0m" << endl;
+	}
+
+	cout << "<<Press 1 to exit: ";
+	int i;
+	cin >> i;
+	if (i==1)
+	{
+		system("cls");
+		select();
+	}
+	else
+	{
+		system("cls");
+		read_data();
+	}
+	delete result;
+	delete pstmt;
+	delete con;
+	return 0;
 }
 
-void read_table()
+
+int update_data()
 {
+	sql::Driver* driver;
+	sql::Connection* con;
+	sql::Statement* stmt;
+	sql::PreparedStatement* pstmt;
+	sql::ResultSet* result;
+
+	driver = get_driver_instance();
+	con = driver->connect(server, name, password);
+
+	con->setSchema("oop_project_db");
+	pstmt = con->prepareStatement("SELECT* FROM my_data;");
+	result = pstmt->executeQuery();
+
+	char bspc[] = "          ";
+	char spc[] = " ";
+	cout << endl;
+
+	cout << "\t\033[0m------------------------------------------------------------------------\033[0m" << endl;
+	cout << "\t" << bspc << "\033[0msr_no \033[31mid_no \033[32mtype \033[33mComponent_name \033[34mDescription \033[35mprice" << endl;
+	cout << "\t\033[0m------------------------------------------------------------------------\033[0m" << endl;
+	while (result->next())
+	{
+		//printf("Reading from table=(%d, %d, %s, %s, %s, %d)\n", result->getInt(1), result->getInt(2), result->getString(3).c_str(), result->getString(4).c_str(), result->getString(5).c_str(), result->getInt(6));
+		cout << "\t" << bspc << "\033[0m" << result->getInt(1) << spc << "\033[31m" << result->getInt(2) << spc << "\033[32m" << result->getString(3).c_str() << spc << "\033[33m" << result->getString(4).c_str() << spc << "\033[34m" << result->getString(5).c_str() << spc << "\033[35m" << result->getInt(6) << "\033[0m" << endl;
+		cout << "\t\033[36m------------------------------------------------------------------------\033[0m" << endl;
+	}
+
+	cout << "\n<<Select ID to Update: ";
+
+	return 0;
+}
+
+int delete_data()
+{
+	sql::Driver* driver;
+	sql::Connection* con;
+	sql::Statement* stmt;
+	sql::PreparedStatement* pstmt;
+	sql::ResultSet* result;
+
+
+	driver = get_driver_instance();
+	con = driver->connect(server, name, password);
+
+	con->setSchema("oop_project_db");
+	pstmt = con->prepareStatement("SELECT* FROM my_data;");
+	result = pstmt->executeQuery();
+
+	char bspc[] = "          ";
+	char spc[] = " ";
+	cout << endl;
+
+	cout << "\t\033[0m------------------------------------------------------------------------\033[0m" << endl;
+	cout << "\t" << bspc << "\033[0msr_no \033[31mid_no \033[32mtype \033[33mComponent_name \033[34mDescription \033[35mprice" << endl;
+	cout << "\t\033[0m------------------------------------------------------------------------\033[0m" << endl;
+	while (result->next())
+	{
+		//printf("Reading from table=(%d, %d, %s, %s, %s, %d)\n", result->getInt(1), result->getInt(2), result->getString(3).c_str(), result->getString(4).c_str(), result->getString(5).c_str(), result->getInt(6));
+		cout << "\t" << bspc << "\033[0m" << result->getInt(1) << spc << "\033[31m" << result->getInt(2) << spc << "\033[32m" << result->getString(3).c_str() << spc << "\033[33m" << result->getString(4).c_str() << spc << "\033[34m" << result->getString(5).c_str() << spc << "\033[35m" << result->getInt(6) << "\033[0m" << endl;
+		cout << "\t\033[36m------------------------------------------------------------------------\033[0m" << endl;
+	}
+
+	cout << "\n<<Enter data sr_no to delete: ";
+	int sr_no;
+	cin >> sr_no;
+	
+
+
+	pstmt = con->prepareStatement("DELETE FROM my_data WHERE sr_no = ?");
+	pstmt->setInt(1, sr_no);
+	result = pstmt->executeQuery();
+	cout << "<<Row Deleted\n";
+	
+	opt_de();
+
+	delete result;
+	delete pstmt;
+	delete con;
+	return 0;
+}
+
+int opt_in()
+{
+	cout << "\n\033[34m<<Enter '0' to add more data or '1' to exit: \033[0m";
+	int opt;
+	cin >> opt;
+	if (opt == 0)
+	{
+		system("cls");
+		insert_data();
+	}
+	else if (opt == 1)
+	{
+		system("cls");
+		select();
+	}
+	else
+	{
+		system("cls");
+		cout << "\n\033[31m<<Error input try again\n\033[0m";
+		opt_in();
+	}
+	return 0;
+}
+
+int opt_de()
+{
+	cout << "\033[34m<<Enter 1 to continue 0 to exit: \033[0m";
+	int opt;
+	cin >> opt;
+	if (opt == 1)
+	{
+		system("cls");
+		delete_data();
+	}
+	else if (opt == 0)
+	{
+		system("cls");
+		select();
+	}
+	else
+	{
+		system("cls");
+		cout << "\n\033[31m<<Error input try again\n\033[0m";
+		opt_de();
+	}
+	return 0;
 }

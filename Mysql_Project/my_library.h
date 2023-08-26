@@ -4,6 +4,7 @@
 #include<stdlib.h>
 #include<conio.h>
 #include<cstdlib>
+#include<string>
 
 #include"ASCIIART.h"
 
