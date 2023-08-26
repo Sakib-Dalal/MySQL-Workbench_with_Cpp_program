@@ -139,6 +139,16 @@ int insert_data()
 	insert_data_format(); // print format ascii
 	con->setSchema("oop_project_db");
 	//-----
+	int x;
+	cout << "\033[31m<<Enter int to Continue or 0 to Exit: \033[0m";
+	cin >> x;
+	//--exit
+	if (x == 0)
+	{
+		system("cls");
+		select();
+	}
+
 	pstmt = con->prepareStatement("INSERT INTO my_data(id_no, type, Component_name, Description, price) VALUES(?,?,?,?,?)");
 	
 	int id_no;
@@ -252,9 +262,16 @@ int update_data()
 		cout << "\t\033[36m------------------------------------------------------------------------\033[0m" << endl;
 	}
 
-	cout << "\n\033[32m<<Select sr_no to Update: \033[0m";
+	cout << "\n\033[32m<<Select sr_no to Update or 0 to exit: \033[0m";
 	int i;
 	cin >> i;
+	//--exit
+	if (i == 0)
+	{
+		system("cls");
+		select();
+	}
+
 	cout << "\033[35mSelected \033[36m" << i << "\033[35m id as target id!\033[0m" << endl;
 	cout << endl;
 	cout << "\033[32m<<Select option to Update: \033[0m" << endl;
@@ -263,9 +280,15 @@ int update_data()
 	int j;
 	cin >> j;
 
+	//--exit
+	if (j == 7)
+	{
+		system("cls");
+		update_data();
+	}
 
 	//---id_no
-	if (j == 1)
+	else if (j == 1)
 	{
 		int new_id;
 		cout << "\033[34m<<Enter new id_no: \033[0m";
@@ -274,10 +297,27 @@ int update_data()
 		pstmt->setInt(1, new_id);
 		pstmt->setInt(2, i);
 		pstmt->executeQuery();
+
+		system("cls"); //clear screen
 		cout << "\033[32m<<Update done!\033[0m" << endl;
+		update_data();
 	}
 
-
+	//---type
+	else if (j == 2)
+	{
+		string new_type;
+		cout << "\033[34m<<Enter new type: \033[0m";
+		cin >> new_type;
+		pstmt = con->prepareStatement("UPDATE my_data SET type = ? WHERE sr_no = ?");
+		pstmt->setString(1, new_type);
+		pstmt->setInt(2, i);
+		pstmt->executeQuery();
+		
+		system("cls");
+		cout << "\033[32m<<Update done!\033[0m" << endl;
+		update_data();
+	}
 
 	return 0;
 }
@@ -312,10 +352,15 @@ int delete_data()
 		cout << "\t\033[36m------------------------------------------------------------------------\033[0m" << endl;
 	}
 
-	cout << "\n<<Enter data sr_no to delete: ";
+	cout << "\n<<Enter data sr_no to delete or 0 to exit: ";
 	int sr_no;
 	cin >> sr_no;
-	
+	//--exit
+	if (sr_no == 0)
+	{
+		system("cls");
+		select();
+	}
 
 
 	pstmt = con->prepareStatement("DELETE FROM my_data WHERE sr_no = ?");
