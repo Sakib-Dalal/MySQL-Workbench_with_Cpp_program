@@ -319,6 +319,103 @@ int update_data()
 		update_data();
 	}
 
+	//---Component_name
+	else if (j == 3)
+	{
+		string new_Component_name;
+		cout << "\033[34m<<Enter new Component_name: \033[0m";
+		cin >> new_Component_name;
+		pstmt = con->prepareStatement("UPDATE my_data SET Component_name = ? WHERE sr_no = ?");
+		pstmt->setString(1, new_Component_name);
+		pstmt->setInt(2, i);
+		pstmt->executeQuery();
+
+		system("cls");
+		cout << "\033[32m<<Update done!\033[0m" << endl;
+		update_data();
+	}
+
+	//---Description
+	else if (j == 4)
+	{
+		string new_Description;
+		cout << "\033[34m<<Enter new Description: \033[0m";
+		cin >> new_Description;
+		pstmt = con->prepareStatement("UPDATE my_data SET Description = ? WHERE sr_no = ?");
+		pstmt->setString(1, new_Description);
+		pstmt->setInt(2, i);
+		pstmt->executeQuery();
+
+		system("cls");
+		cout << "\033[32m<<Update done!\033[0m" << endl;
+		update_data();
+	}
+
+	//---price
+	else if (j == 5)
+	{
+		int new_price;
+		cout << "\033[34m<<Enter new price: \033[0m";
+		cin >> new_price;
+		pstmt = con->prepareStatement("UPDATE my_data SET price = ? WHERE sr_no = ?");
+		pstmt->setInt(1, new_price);
+		pstmt->setInt(2, i);
+		pstmt->executeQuery();
+
+		system("cls"); //clear screen
+		cout << "\033[32m<<Update done!\033[0m" << endl;
+		update_data();
+	}
+
+	//---All
+	else if (j == 6)
+	{
+		int new_id;
+		cout << "\033[34m<<Enter new id_no: \033[0m";
+		cin >> new_id;
+		pstmt = con->prepareStatement("UPDATE my_data SET id_no = ? WHERE sr_no = ?");
+		pstmt->setInt(1, new_id);
+		pstmt->setInt(2, i);
+		pstmt->executeQuery();
+
+		string new_type;
+		cout << "\033[34m<<Enter new type: \033[0m";
+		cin >> new_type;
+		pstmt = con->prepareStatement("UPDATE my_data SET type = ? WHERE sr_no = ?");
+		pstmt->setString(1, new_type);
+		pstmt->setInt(2, i);
+		pstmt->executeQuery();
+
+		string new_Component_name;
+		cout << "\033[34m<<Enter new Component_name: \033[0m";
+		cin >> new_Component_name;
+		pstmt = con->prepareStatement("UPDATE my_data SET Component_name = ? WHERE sr_no = ?");
+		pstmt->setString(1, new_Component_name);
+		pstmt->setInt(2, i);
+		pstmt->executeQuery();
+
+		string new_Description;
+		cout << "\033[34m<<Enter new Description: \033[0m";
+		cin >> new_Description;
+		pstmt = con->prepareStatement("UPDATE my_data SET Description = ? WHERE sr_no = ?");
+		pstmt->setString(1, new_Description);
+		pstmt->setInt(2, i);
+		pstmt->executeQuery();
+
+		int new_price;
+		cout << "\033[34m<<Enter new price: \033[0m";
+		cin >> new_price;
+		pstmt = con->prepareStatement("UPDATE my_data SET price = ? WHERE sr_no = ?");
+		pstmt->setInt(1, new_price);
+		pstmt->setInt(2, i);
+		pstmt->executeQuery();
+
+		system("cls"); //clear screen
+		cout << "\033[32m<<Update done!\033[0m" << endl;
+		update_data();
+
+	}
+
 	return 0;
 }
 
