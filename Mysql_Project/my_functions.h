@@ -8,6 +8,7 @@ int insert_data();
 int update_data();
 int read_data();
 int delete_data();
+int delre_database();
 
 int opt_in();
 int opt_de();
@@ -90,13 +91,32 @@ void select()
 			select();
 		}
 	}
-	else if (i != 1 || i != 01 || i != 2 || i != 02 || i != 3 || i != 03 || i != 4 || i != 04|| i != 5||i!=05)
+
+	else if (i == 5001)
+	{
+		system("cls");
+		cout << endl;
+		cout << "\033[31m<<press 1 to delete database and recreate: \033[0m";
+		cin >> i;
+		if (i == 1)
+		{
+			delre_database();
+			select();
+		}
+		else
+		{
+			select();
+		}
+	}
+
+	else if (i != 1 || i != 01 || i != 2 || i != 02 || i != 3 || i != 03 || i != 4 || i != 04|| i != 5||i!=05 || i != 5001)
 	{
 		system("cls");
 		cout << "\033[31m<<Error try again! \033[0m";
 		select();
 		
 	}
+
 }
 
 
@@ -120,8 +140,7 @@ int insert_data()
 	con->setSchema("oop_project_db");
 	//-----
 	pstmt = con->prepareStatement("INSERT INTO my_data(id_no, type, Component_name, Description, price) VALUES(?,?,?,?,?)");
-	//int sr_no = 0;
-	//pstmt->setInt(1, 0);
+	
 	int id_no;
 	cout<< "\n\033[32m<<Enter id_no: \033[0m";
 	cin >> id_no;
@@ -284,6 +303,24 @@ int delete_data()
 	delete result;
 	delete pstmt;
 	delete con;
+	return 0;
+}
+
+//----5001
+int delre_database()
+{
+	sql::Driver* driver;
+	sql::Connection* con;
+	sql::Statement* stmt;
+
+	driver = get_driver_instance();
+	con = driver->connect(server, name, password);
+
+	con->setSchema("oop_project_db");
+	stmt = con->createStatement();
+	stmt->execute("DROP TABLE IF EXISTS my_data");
+	stmt->execute("CREATE TABLE my_data(sr_no INT AUTO_INCREMENT PRIMARY KEY, id_no INT, type VARCHAR(30), Component_name VARCHAR(50), Description VARCHAR(1000), price INT);");
+	delete stmt;
 	return 0;
 }
 
