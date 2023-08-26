@@ -70,11 +70,12 @@ const int insert_data_format()
 
 const int opt_for_update_data()
 {
-	cout << "1: id_no" << endl;
-	cout << "2: type" << endl;
-	cout << "3: Component_name" << endl;
-	cout << "4: Description" << endl;
-	cout << "5: price" << endl;
-	cout << "6: All" << endl;
+	cout << "\033[36m	1: id_no" << endl;
+	cout << "	2: type" << endl;
+	cout << "	3: Component_name" << endl;
+	cout << "	4: Description" << endl;
+	cout << "	5: price" << endl;
+	cout << "	6: All" << endl;
+	cout << "	7: exit" << endl;
 	return 0;
 }
